@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
-import { normalizeCollection, resolveApiBaseUrl } from '../utils/api.js';
+import { normalizeCollection } from '../utils/api.js';
+
+const apiBaseUrl = import.meta.env.VITE_CODESPACE_NAME
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/teams/`
+  : 'http://localhost:8000/api/teams/';
 
 export default function Teams() {
   const [teams, setTeams] = useState([]);
@@ -10,7 +14,7 @@ export default function Teams() {
 
     async function loadTeams() {
       try {
-        const response = await fetch(`${resolveApiBaseUrl()}/api/teams/`);
+        const response = await fetch(apiBaseUrl);
         const payload = await response.json();
 
         if (isMounted) {

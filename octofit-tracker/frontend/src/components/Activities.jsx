@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
-import { normalizeCollection, resolveApiBaseUrl } from '../utils/api.js';
+import { normalizeCollection } from '../utils/api.js';
+
+const apiBaseUrl = import.meta.env.VITE_CODESPACE_NAME
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/activities/`
+  : 'http://localhost:8000/api/activities/';
 
 export default function Activities() {
   const [activities, setActivities] = useState([]);
@@ -10,7 +14,7 @@ export default function Activities() {
 
     async function loadActivities() {
       try {
-        const response = await fetch(`${resolveApiBaseUrl()}/api/activities/`);
+        const response = await fetch(apiBaseUrl);
         const payload = await response.json();
 
         if (isMounted) {
